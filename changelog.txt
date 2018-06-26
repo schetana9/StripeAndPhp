@@ -1,0 +1,17 @@
+Version History 2.1: (Jul 7, 2016)
+ - post order issue after login bug fixed
+ - responsive design fixed
+ 
+ file changes:
+ users/postorder_add.php
+ users/order.php
+
+Version History 2.0: (Jul 7, 2016)
+ - Paypal added
+ - Improved few features.
+Version History 1.2: (Jun 30, 2016)
+ - Few bugs fixed
+ - Security improved
+ - New features added
+Version History 1.0: (Jun 22, 2016)
+ - Initial release
