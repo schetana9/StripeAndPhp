@@ -1,10 +1,10 @@
 <?php	
 include("../connection.php");
 @session_start();
-$phone_no = mysql_real_escape_string($_REQUEST['phone_no']);
-$result=mysql_query("select * from sv_user_profile where phone_no = '$phone_no'");
+$phone_no = mysqli_real_escape_string($con,$_REQUEST['phone_no']);
+$result=mysqli_query($con,"select * from sv_user_profile where phone_no = '$phone_no'");
 $row = mysql_fetch_array($result);
-$email_id=mysql_real_escape_string($row['email_id']);
+$email_id=mysqli_real_escape_string($con,$row['email_id']);
 $rowcount = mysql_num_rows($result);
 //email id not match then.
 if ($rowcount== 0)
@@ -26,18 +26,18 @@ $rnd_id = strrev(str_replace("/","",$rnd_id));
 //finally I take the first 8 characters from the $rnd_id 
 $rnd_id = substr($rnd_id,0,$random_id_length);
 $pas=md5($rnd_id);
-if(mysql_query("update sv_user_profile set password='$pas' where phone_no='$phone_no'"))
+if(mysqli_query($con,"update sv_user_profile set password='$pas' where phone_no='$phone_no'"))
 {
 if($email_id!='')
 {
-$query1=mysql_fetch_array(mysql_query("select * from sv_admin_login"));
-$site_url=mysql_real_escape_string($query1['site_url']);
-$logo=mysql_real_escape_string($query1['logo']);
+$query1=mysql_fetch_array(mysqli_query($con,"select * from sv_admin_login"));
+$site_url=mysqli_real_escape_string($con,$query1['site_url']);
+$logo=mysqli_real_escape_string($con,$query1['logo']);
 $imgSrc=$site_url."/admincp/admin-logo/$logo";
-$site_name = mysql_real_escape_string($query1['site_name']);
+$site_name = mysqli_real_escape_string($con,$query1['site_name']);
 $subject = 'Password Details'; 
-$phone_no = mysql_real_escape_string($phone_no); 
-$random_no = mysql_real_escape_string($rnd_id); 
+$phone_no = mysqli_real_escape_string($con,$phone_no); 
+$random_no = mysqli_real_escape_string($con,$rnd_id); 
 $message = '<!DOCTYPE HTML>'. 
 '<head>'. 
 '<meta http-equiv="content-type" content="text/html">'. 
@@ -59,9 +59,9 @@ $message = '<!DOCTYPE HTML>'.
 '</div>'. 
 '</body>'; 
 /*EMAIL TEMPLATE ENDS*/ 
-$to      = mysql_real_escape_string($email_id);              // give to email address 
+$to      = mysqli_real_escape_string($con,$email_id);              // give to email address 
 $subject = 'Cleaning - Account Details';  //change subject of email 
-$from    = mysql_real_escape_string($query1['email_id']);                              // give from email address 
+$from    = mysqli_real_escape_string($con,$query1['email_id']);                              // give from email address 
 // mandatory headers for email message, change if you need something different in your setting. 
 $headers  = "From: " . $from . "\r\n"; 
 $headers .= "MIME-Version: 1.0\r\n"; 

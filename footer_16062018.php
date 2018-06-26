@@ -1,13 +1,13 @@
 <?php
 include("connection.php");
-$res         = mysql_fetch_array(mysql_query("select * from sv_admin_login"));
-$admin_email = mysql_real_escape_string($res['email_id']);
-$site_name   = mysql_real_escape_string($res['site_name']);
-$logo        = mysql_real_escape_string($res['logo']);
-$favicon     = mysql_real_escape_string($res['favicon']);
-$site_desc   = mysql_real_escape_string($res['site_desc']);
-$keyword     = mysql_real_escape_string($res['keyword']);
-$site_url    = mysql_real_escape_string($res['site_url']);
+$res         = mysql_fetch_array(mysqli_query($con,"select * from sv_admin_login"));
+$admin_email = mysqli_real_escape_string($con,$res['email_id']);
+$site_name   = mysqli_real_escape_string($con,$res['site_name']);
+$logo        = mysqli_real_escape_string($con,$res['logo']);
+$favicon     = mysqli_real_escape_string($con,$res['favicon']);
+$site_desc   = mysqli_real_escape_string($con,$res['site_desc']);
+$keyword     = mysqli_real_escape_string($con,$res['keyword']);
+$site_url    = mysqli_real_escape_string($con,$res['site_url']);
 ?>
 
 <footer class="footer">

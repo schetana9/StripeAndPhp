@@ -16,11 +16,11 @@
 <div class="container">
 <?php 
  include("../connection.php");
-    $res1=mysql_query("select * from sv_services");
+    $res1=mysqli_query($con,"select * from sv_services");
     while($row1=mysql_fetch_array($res1))
     {
-                    $services_name=mysql_real_escape_string($row1['services_name']);    
-                    $service_img=mysql_real_escape_string($row1['service_img']);
+                    $services_name=mysqli_real_escape_string($con,$row1['services_name']);    
+                    $service_img=mysqli_real_escape_string($con,$row1['service_img']);
             ?>
             <ul class="ser-img">
         <li class="col-md-3 col-sm-3 col-lg-3 home_icon" ><img src="../admincp/admin-logo/<?php echo $service_img;?>">

@@ -37,11 +37,11 @@ Les services à la personne est notre metier!<br /></span>
                     <select required="required" id="City" name="City" class="service"> 
                         <option value="">Votre departement</option>
                             <?php        
-                                $res=mysql_query("select * from sv_city order by city_id");
+                                $res=mysqli_query($con,"select * from sv_city order by city_id");
                                 while($row=mysql_fetch_array($res))
                                 {
-                                    $city_id=mysql_real_escape_string($row['city_id']);
-                                    $cname=mysql_real_escape_string($row['city_name']);            
+                                    $city_id=mysqli_real_escape_string($con,$row['city_id']);
+                                    $cname=mysqli_real_escape_string($con,$row['city_name']);            
                             ?>
                             <option value="<?php echo $row['city_name'];?>"><?php echo $cname;?></option>
                             <?php
@@ -54,11 +54,11 @@ Les services à la personne est notre metier!<br /></span>
                     <select required="required" id="services" name="services" class="service"> 
                         <option value="">Sélectionner votre service</option>
                         <?php        
-                            $res=mysql_query("select * from sv_services order by services_id");
+                            $res=mysqli_query($con,"select * from sv_services order by services_id");
                             while($row=mysql_fetch_array($res))
                             {
-                                $services_id=mysql_real_escape_string($row['services_id']);
-                                $sname=mysql_real_escape_string($row['services_name']);            
+                                $services_id=mysqli_real_escape_string($con,$row['services_id']);
+                                $sname=mysqli_real_escape_string($con,$row['services_name']);            
                         ?>
                         <option value="<?php echo $row['services_id'];?>"><?php echo $row['services_name'];?></option>
                         <?php
@@ -91,12 +91,12 @@ Les services à la personne est notre metier!<br /></span>
 <div class="container">
 <div class="col-lg-12">
             <?php 
-                $res1=mysql_query("select * from sv_services ORDER BY services_id ASC limit 0,4");
+                $res1=mysqli_query($con,"select * from sv_services ORDER BY services_id ASC limit 0,4");
                 $numrow=mysql_num_rows($res1);
                 while($row1=mysql_fetch_array($res1))
                 {
-                    $services_name=mysql_real_escape_string($row1['services_name']);    
-                    $service_img=mysql_real_escape_string($row1['service_img']);
+                    $services_name=mysqli_real_escape_string($con,$row1['services_name']);    
+                    $service_img=mysqli_real_escape_string($con,$row1['service_img']);
             ?>
             <ul class="ser-img">
         <li class="col-md-3 col-sm-3"><img src="admincp/admin-logo/<?php echo $service_img;?>">
@@ -109,7 +109,7 @@ Les services à la personne est notre metier!<br /></span>
 </div>    
  <div class="min-space"></div>
 <?php 
-$res2=mysql_query("select * from sv_services ORDER BY services_id ASC");
+$res2=mysqli_query($con,"select * from sv_services ORDER BY services_id ASC");
 $numrow=mysql_num_rows($res2);
 if($numrow>='5')
 {
@@ -122,7 +122,7 @@ if($numrow>='5')
 
 
 <?php 
-$query=mysql_fetch_array(mysql_query("select * from sv_pages where id=1"));
+$query=mysql_fetch_array(mysqli_query($con,"select * from sv_pages where id=1"));
 $content=$query['page_content'];
 $page_name=$query['page_name'];
 ?>

@@ -1,23 +1,23 @@
 <?php
 include('../connection.php');
 session_start();
-$city_name=mysql_real_escape_string($_REQUEST['city_name']);
-$address=mysql_real_escape_string($_REQUEST['address']);
+$city_name=mysqli_real_escape_string($con,$_REQUEST['city_name']);
+$address=mysqli_real_escape_string($con,$_REQUEST['address']);
 //$city=$_REQUEST['city'];
-$services = mysql_real_escape_string($_REQUEST['services']);
-$sub_services =mysql_real_escape_string($_REQUEST['sub_services']);
-$date = mysql_real_escape_string(date("Y-m-d", strtotime($_REQUEST['date'])));
-$time = mysql_real_escape_string($_REQUEST['time']);
-$req =mysql_real_escape_string($_REQUEST['req']);
-$name = mysql_real_escape_string($_REQUEST['name']);
-$email_id = mysql_real_escape_string($_REQUEST['email_id']);
-$phone_no = mysql_real_escape_string($_REQUEST['phone_no']);
-$pwd = mysql_real_escape_string($_REQUEST['pwd']);
-$price = mysql_real_escape_string($_REQUEST['price']);
-$payment_mode = mysql_real_escape_string($_REQUEST['payment_mode']);
-$pass = mysql_real_escape_string(md5($pwd));
-$type = mysql_real_escape_string($_REQUEST['action']);
-/*$cname=mysql_query("select * from sv_city where city_name='$city_name'");
+$services = mysqli_real_escape_string($con,$_REQUEST['services']);
+$sub_services =mysqli_real_escape_string($con,$_REQUEST['sub_services']);
+$date = mysqli_real_escape_string($con,date("Y-m-d", strtotime($_REQUEST['date'])));
+$time = mysqli_real_escape_string($con,$_REQUEST['time']);
+$req =mysqli_real_escape_string($con,$_REQUEST['req']);
+$name = mysqli_real_escape_string($con,$_REQUEST['name']);
+$email_id = mysqli_real_escape_string($con,$_REQUEST['email_id']);
+$phone_no = mysqli_real_escape_string($con,$_REQUEST['phone_no']);
+$pwd = mysqli_real_escape_string($con,$_REQUEST['pwd']);
+$price = mysqli_real_escape_string($con,$_REQUEST['price']);
+$payment_mode = mysqli_real_escape_string($con,$_REQUEST['payment_mode']);
+$pass = mysqli_real_escape_string($con,md5($pwd));
+$type = mysqli_real_escape_string($con,$_REQUEST['action']);
+/*$cname=mysqli_query($con,"select * from sv_city where city_name='$city_name'");
 $numrow=mysql_num_rows($cname);
 if($numrow=="")
 {
@@ -25,34 +25,34 @@ echo "Invalid City";
 }
 else
 {*/
-$res=mysql_query("select * from sv_user_profile where phone_no='$phone_no'");
+$res=mysqli_query($con,"select * from sv_user_profile where phone_no='$phone_no'");
 $numrow=mysql_num_rows($res);
 if($numrow=="")
 {
-mysql_query("insert into sv_user_profile(name,password,phone_no,email_id,date)values('$name','$pass','$phone_no','$email_id','$date')");
-mysql_query("insert into sv_user_order(name,address,services,sub_services,date,order_time,requirement,phone_no,city_name,price,payment_mode,payment_status)values('$name','$address','$services','$sub_services','$date','$time','$req','$phone_no','$city_name','$price','$payment_mode','pending')");
-$query1=mysql_fetch_array(mysql_query("select * from sv_admin_login"));
-$logo = mysql_real_escape_string($query1['logo']);
+mysqli_query($con,"insert into sv_user_profile(name,password,phone_no,email_id,date)values('$name','$pass','$phone_no','$email_id','$date')");
+mysqli_query($con,"insert into sv_user_order(name,address,services,sub_services,date,order_time,requirement,phone_no,city_name,price,payment_mode,payment_status)values('$name','$address','$services','$sub_services','$date','$time','$req','$phone_no','$city_name','$price','$payment_mode','pending')");
+$query1=mysql_fetch_array(mysqli_query($con,"select * from sv_admin_login"));
+$logo = mysqli_real_escape_string($con,$query1['logo']);
 $imgSrc=$query1['site_url']."/admincp/admin-logo/$logo";
-$site_name = mysql_real_escape_string($query1['site_name']);
+$site_name = mysqli_real_escape_string($con,$query1['site_name']);
 /*----------------------User email start-------------------*/
 $subject= 'Your Account & Order has been created Successfully'; 
-$phone_no = mysql_real_escape_string($phone_no);
-$pwd = mysql_real_escape_string($pwd);
+$phone_no = mysqli_real_escape_string($con,$phone_no);
+$pwd = mysqli_real_escape_string($con,$pwd);
 $subtitle = $site_name . '- Order Details';
-$order = mysql_fetch_array(mysql_query("select * from sv_user_order where phone_no='$phone_no' order by order_id DESC limit 1"));
-$city_name=mysql_real_escape_string($order['city_name']); 
-$address= mysql_real_escape_string($order['address']); 
+$order = mysql_fetch_array(mysqli_query($con,"select * from sv_user_order where phone_no='$phone_no' order by order_id DESC limit 1"));
+$city_name=mysqli_real_escape_string($con,$order['city_name']); 
+$address= mysqli_real_escape_string($con,$order['address']); 
 //$city=$order['city']; 
-$service_id=mysql_real_escape_string($order['services']); 
-$service=mysql_fetch_array(mysql_query("select * from sv_services where services_id='$service_id'"));
-$service_name=mysql_real_escape_string($service['services_name']);
-$sub_services_id=mysql_real_escape_string($order['sub_services']);
-$sub_services=mysql_fetch_array(mysql_query("select * from sv_services_sub where sid='$sub_services_id'"));
+$service_id=mysqli_real_escape_string($con,$order['services']); 
+$service=mysql_fetch_array(mysqli_query($con,"select * from sv_services where services_id='$service_id'"));
+$service_name=mysqli_real_escape_string($con,$service['services_name']);
+$sub_services_id=mysqli_real_escape_string($con,$order['sub_services']);
+$sub_services=mysql_fetch_array(mysqli_query($con,"select * from sv_services_sub where sid='$sub_services_id'"));
 $sub_services_name=$sub_services['services_sub_name'];
-$date = mysql_real_escape_string($order['date']);
-$order_time =mysql_real_escape_string($order['order_time']);
-$requirement = mysql_real_escape_string($order['requirement']);
+$date = mysqli_real_escape_string($con,$order['date']);
+$order_time =mysqli_real_escape_string($con,$order['order_time']);
+$requirement = mysqli_real_escape_string($con,$order['requirement']);
 $message = '<!DOCTYPE HTML>'. 
 '<head>'. 
 '<meta http-equiv="content-type" content="text/html">'. 
@@ -82,9 +82,9 @@ $message = '<!DOCTYPE HTML>'.
 '</div>'. 
 '</body>'; 
 /*EMAIL TEMPLATE ENDS*/ 
-$to      = mysql_real_escape_string($email_id);              // give to email address 
+$to      = mysqli_real_escape_string($con,$email_id);              // give to email address 
 $subject = 'Account & Order Details - ' . $site_name;  //change subject of email 
-$from    = mysql_real_escape_string($query1['email_id']);                         // give from email address 
+$from    = mysqli_real_escape_string($con,$query1['email_id']);                         // give from email address 
 // mandatory headers for email message, change if you need something different in your setting. 
 $headers  = "From: " . $from . "\r\n"; 
 $headers .= "MIME-Version: 1.0\r\n"; 
@@ -132,9 +132,9 @@ $message = '<!DOCTYPE HTML>'.
 '</div>'. 
 '</body>'; 
 /*EMAIL TEMPLATE ENDS*/ 
-$from    = mysql_real_escape_string($query1['email_id']);              // give to email address 
+$from    = mysqli_real_escape_string($con,$query1['email_id']);              // give to email address 
 $subject = 'Account & Order Details - ' . $site_name;  //change subject of email 
-$from    = mysql_real_escape_string($query1['email_id']);                         // give from email address 
+$from    = mysqli_real_escape_string($con,$query1['email_id']);                         // give from email address 
 // mandatory headers for email message, change if you need something different in your setting. 
 $headers  = "From: " . $from . "\r\n"; 
 $headers .= "MIME-Version: 1.0\r\n"; 
@@ -155,7 +155,7 @@ $last_order_id=$order['order_id'];
 		$payment_mode=$order['payment_mode'];
 		if($payment_mode=='cash')
 		{
-			mysql_query("update sv_user_order set payment_status='completed' where order_id='$last_order_id'");
+			mysqli_query($con,"update sv_user_order set payment_status='completed' where order_id='$last_order_id'");
 				echo "Inserted";
 		}		
 		else if($payment_mode=='paypal')

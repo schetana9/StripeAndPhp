@@ -2,21 +2,21 @@
 	include("../connection.php");
 	@session_start();
 	
-	   $type=mysql_real_escape_string($_REQUEST['type']);
-		$sub_id=mysql_real_escape_string($_REQUEST['sub_id']);
+	   $type=mysqli_real_escape_string($con,$_REQUEST['type']);
+		$sub_id=mysqli_real_escape_string($con,$_REQUEST['sub_id']);
 		$name='';
 		$id='';
-		$res=mysql_query("select * from sv_services_sub where services_name='$sub_id'");
+		$res=mysqli_query($con,"select * from sv_services_sub where services_name='$sub_id'");
 		while($row=mysql_fetch_array($res))
 		{
 			if($type=="name")
 			{
-				$name.=mysql_real_escape_string($row['services_sub_name']);
+				$name.=mysqli_real_escape_string($con,$row['services_sub_name']);
 				$name.="#";
 			}
 			else 
 			{
-				$name.=mysql_real_escape_string($row['sid']);
+				$name.=mysqli_real_escape_string($con,$row['sid']);
 				$name.="#";
 			}
 		}

@@ -3,34 +3,34 @@ include('../connection.php');
 require_once('../stripe-php-master/init.php');
 
 @session_start();
-$phone_no=mysql_real_escape_string($_SESSION['phone_no']);
-$email=mysql_real_escape_string($_REQUEST['email']);
-$cemail=mysql_real_escape_string($_REQUEST['cemail']);
-$fname=mysql_real_escape_string($_REQUEST['fname']);
-$lname=mysql_real_escape_string($_REQUEST['lname']);
-$mob_no=mysql_real_escape_string($_REQUEST['mob_no']);
-$post_code=mysql_real_escape_string($_REQUEST['post_code']);
-$exp=mysql_real_escape_string($_REQUEST['exp']);
-$paid_work=mysql_real_escape_string($_REQUEST['paid_work']);
-$gender=mysql_real_escape_string($_REQUEST['gender']);
-$dob=mysql_real_escape_string($_REQUEST['dob']);
-$dob1 = mysql_real_escape_string(date("Y-m-d", strtotime($dob)));
-$nation=mysql_real_escape_string($_REQUEST['nation']);
-$address=mysql_real_escape_string($_REQUEST['address']);
-$suburb=mysql_real_escape_string($_REQUEST['suburb']);
-$abt=mysql_real_escape_string($_REQUEST['abt']);
-$creat_time=mysql_real_escape_string(date("Y-m-d"));
-$type=mysql_real_escape_string($_REQUEST['action']);
-$token = mysql_real_escape_string($_REQUEST['token']);
+$phone_no=mysqli_real_escape_string($con,$_SESSION['phone_no']);
+$email=mysqli_real_escape_string($con,$_REQUEST['email']);
+$cemail=mysqli_real_escape_string($con,$_REQUEST['cemail']);
+$fname=mysqli_real_escape_string($con,$_REQUEST['fname']);
+$lname=mysqli_real_escape_string($con,$_REQUEST['lname']);
+$mob_no=mysqli_real_escape_string($con,$_REQUEST['mob_no']);
+$post_code=mysqli_real_escape_string($con,$_REQUEST['post_code']);
+$exp=mysqli_real_escape_string($con,$_REQUEST['exp']);
+$paid_work=mysqli_real_escape_string($con,$_REQUEST['paid_work']);
+$gender=mysqli_real_escape_string($con,$_REQUEST['gender']);
+$dob=mysqli_real_escape_string($con,$_REQUEST['dob']);
+$dob1 = mysqli_real_escape_string($con,date("Y-m-d", strtotime($dob)));
+$nation=mysqli_real_escape_string($con,$_REQUEST['nation']);
+$address=mysqli_real_escape_string($con,$_REQUEST['address']);
+$suburb=mysqli_real_escape_string($con,$_REQUEST['suburb']);
+$abt=mysqli_real_escape_string($con,$_REQUEST['abt']);
+$creat_time=mysqli_real_escape_string($con,date("Y-m-d"));
+$type=mysqli_real_escape_string($con,$_REQUEST['action']);
+$token = mysqli_real_escape_string($con,$_REQUEST['token']);
 if($type=='add')
 {
-mysql_query("insert into  sv_service_provider(email,confirm_email,first_name,last_name,mob_no,post_code,exp,paid_work,gender,dob,nationality,address,suburb,abt_us,phone_no,creat_time)values('$email','$cemail','$fname','$lname','$mob_no','$post_code','$exp','$paid_work','$gender','$dob1','$nation','$address','$suburb','$abt','$phone_no','$creat_time')");
-$query1=mysql_fetch_array(mysql_query("select * from sv_admin_login"));
-$site_url=mysql_real_escape_string($query1['site_url']);
-$logo=mysql_real_escape_string($query1['logo']);
+mysqli_query($con,"insert into  sv_service_provider(email,confirm_email,first_name,last_name,mob_no,post_code,exp,paid_work,gender,dob,nationality,address,suburb,abt_us,phone_no,creat_time)values('$email','$cemail','$fname','$lname','$mob_no','$post_code','$exp','$paid_work','$gender','$dob1','$nation','$address','$suburb','$abt','$phone_no','$creat_time')");
+$query1=mysql_fetch_array(mysqli_query($con,"select * from sv_admin_login"));
+$site_url=mysqli_real_escape_string($con,$query1['site_url']);
+$logo=mysqli_real_escape_string($con,$query1['logo']);
 $imgSrc=$site_url."/admincp/admin-logo/".$logo;
-$site_name = mysql_real_escape_string($query1['site_name']);
-$stripe_secret_key = mysql_real_escape_string($query1['stripe_secret_key']);
+$site_name = mysqli_real_escape_string($con,$query1['site_name']);
+$stripe_secret_key = mysqli_real_escape_string($con,$query1['stripe_secret_key']);
 
 
 // stripe integration 
@@ -49,7 +49,7 @@ $account_id = $acct->id;
 
 if($acct){
     $last_id = mysql_insert_id($con);
-    mysql_query("update sv_service_provider set stripe_token='$account_id' where id='$last_id'");
+    mysqli_query($con,"update sv_service_provider set stripe_token='$account_id' where id='$last_id'");
     
     
 }
@@ -58,13 +58,13 @@ if($acct){
 
 /*----------admin email---------------*/
 $subject= 'New Service Provider Request'; 
-$cleaner=mysql_fetch_array(mysql_query("select * from sv_service_provider where phone_no='$phone_no' order by id DESC limit 1 "));		
-$email=mysql_real_escape_string($cleaner['email']); 
-$first_name= mysql_real_escape_string($cleaner['first_name']); 
-$last_name=mysql_real_escape_string($cleaner['last_name']); 
-$mob_no=mysql_real_escape_string($cleaner['mob_no']); 
-$post_code= mysql_real_escape_string($cleaner['post_code']); 
-$exp=mysql_real_escape_string($cleaner['exp']); 
+$cleaner=mysql_fetch_array(mysqli_query($con,"select * from sv_service_provider where phone_no='$phone_no' order by id DESC limit 1 "));		
+$email=mysqli_real_escape_string($con,$cleaner['email']); 
+$first_name= mysqli_real_escape_string($con,$cleaner['first_name']); 
+$last_name=mysqli_real_escape_string($con,$cleaner['last_name']); 
+$mob_no=mysqli_real_escape_string($con,$cleaner['mob_no']); 
+$post_code= mysqli_real_escape_string($con,$cleaner['post_code']); 
+$exp=mysqli_real_escape_string($con,$cleaner['exp']); 
 if($exp==1)
 $exp="i have never cleaned professionally before";
 else if($exp==2)
@@ -89,11 +89,11 @@ if($gender==1)
 $gender="male";
 else if($gender==2)
 $gender="female";
-$dob=mysql_real_escape_string($cleaner['dob']); 
-$nationality=mysql_real_escape_string($cleaner['nationality']); 
-$address=mysql_real_escape_string($cleaner['address']); 
-$suburb=mysql_real_escape_string($cleaner['suburb']); 
-$abt_us=mysql_real_escape_string($cleaner['abt_us']); 
+$dob=mysqli_real_escape_string($con,$cleaner['dob']); 
+$nationality=mysqli_real_escape_string($con,$cleaner['nationality']); 
+$address=mysqli_real_escape_string($con,$cleaner['address']); 
+$suburb=mysqli_real_escape_string($con,$cleaner['suburb']); 
+$abt_us=mysqli_real_escape_string($con,$cleaner['abt_us']); 
 if($abt_us==1)
 $abt_us="Events";
 else if($abt_us==2)
@@ -183,9 +183,9 @@ $message = '<!DOCTYPE HTML>'.
 '</div>'. 
 '</body>'; 
 /*EMAIL TEMPLATE ENDS*/ 
-$to      = mysql_real_escape_string($email);            // give to email address 
+$to      = mysqli_real_escape_string($con,$email);            // give to email address 
 $subject = 'Service Provider Request Sent - '.$site_name;  //change subject of email 
-$from    = mysql_real_escape_string($query1['email_id']);                              // give from email address 
+$from    = mysqli_real_escape_string($con,$query1['email_id']);                              // give from email address 
 // mandatory headers for email message, change if you need something different in your setting. 
 $headers  = "From: " . $from . "\r\n"; 
 $headers .= "MIME-Version: 1.0\r\n"; 

@@ -7,18 +7,18 @@ require_once('../stripe-php-master/init.php');
 
 $order_id=$_SESSION['order_id'];
 $signup_id=$_SESSION['signup_id'];
-$results = mysql_query("select * from sv_admin_login");
+$results = mysqli_query($con,"select * from sv_admin_login");
 $row=mysql_fetch_array($results);
 $currency = $row['currency_mode'];
 $stripe_secret_key = $row['stripe_secret_key'];
 //print_r($_SESSION);die;
 
-$results = mysql_query("select * from sv_user_order where order_id='$order_id'");
+$results = mysqli_query($con,"select * from sv_user_order where order_id='$order_id'");
 $row=mysql_fetch_array($results);
 $price=$row['price'];		
 $final_price = (int)$price*100;	
 
-$results = mysql_query("select * from sv_user_profile where signup_id='$signup_id'");
+$results = mysqli_query($con,"select * from sv_user_profile where signup_id='$signup_id'");
 $row=mysql_fetch_array($results);
 $db_customer_token = $row['customer_token'];
 $source_key = $_GET['source'];
@@ -60,7 +60,7 @@ if($charge)
     $customer_token_id = $charge->customer;
     $user_id = $signup_id;
 
-    mysql_query("insert into sv_charge(charge_token_id,amount,customer_token_id,user_id)values('$charge_token_id','$amount','$customer_token_id','$user_id')");
+    mysqli_query($con,"insert into sv_charge(charge_token_id,amount,customer_token_id,user_id)values('$charge_token_id','$amount','$customer_token_id','$user_id')");
     header('location:dashboard.php?msg=paymentsuccess');
     //echo "3d charge apply";
 

@@ -1,34 +1,34 @@
 <?php
 include('../connection.php');
-$name=mysql_real_escape_string($_POST['name']);
-$email_id=mysql_real_escape_string($_POST['email_id']);
-$password=mysql_real_escape_string($_POST['pwd']);
-$pwd = mysql_real_escape_string(md5($password));
-$phone_no=mysql_real_escape_string($_POST['pho_no']);
-$city=mysql_real_escape_string($_POST['city']);
-$address=mysql_real_escape_string($_POST['address']);
-$pin_code=mysql_real_escape_string($_POST['pin_code']);
-$gender=mysql_real_escape_string($_POST['gender']);
-$dat=mysql_real_escape_string(date("Y-m-d H:i:s")); 
-$res=mysql_query("select * from sv_user_profile where phone_no='$phone_no'");
+$name=mysqli_real_escape_string($con,$_POST['name']);
+$email_id=mysqli_real_escape_string($con,$_POST['email_id']);
+$password=mysqli_real_escape_string($con,$_POST['pwd']);
+$pwd = mysqli_real_escape_string($con,md5($password));
+$phone_no=mysqli_real_escape_string($con,$_POST['pho_no']);
+$city=mysqli_real_escape_string($con,$_POST['city']);
+$address=mysqli_real_escape_string($con,$_POST['address']);
+$pin_code=mysqli_real_escape_string($con,$_POST['pin_code']);
+$gender=mysqli_real_escape_string($con,$_POST['gender']);
+$dat=mysqli_real_escape_string($con,date("Y-m-d H:i:s")); 
+$res=mysqli_query($con,"select * from sv_user_profile where phone_no='$phone_no'");
 $numrow=mysql_num_rows($res);
 if($numrow=="")
 {
-mysql_query("insert into sv_user_profile(name,email_id,password,phone_no,city,address,pin_code,gender,date)values('$name','$email_id','$pwd','$phone_no','$city','$address','$pin_code','$gender','$dat')");
-//mysql_query("insert into sv_login(phone_no,password)values('$phone_no','$pwd')");
+mysqli_query($con,"insert into sv_user_profile(name,email_id,password,phone_no,city,address,pin_code,gender,date)values('$name','$email_id','$pwd','$phone_no','$city','$address','$pin_code','$gender','$dat')");
+//mysqli_query($con,"insert into sv_login(phone_no,password)values('$phone_no','$pwd')");
 ?>
 <!---------Mail function ------------>
 <?php 
 //include('../header.php');
-$query1=mysql_fetch_array(mysql_query("select * from sv_admin_login"));
-$logo = mysql_real_escape_string($query1['logo']);
+$query1=mysql_fetch_array(mysqli_query($con,"select * from sv_admin_login"));
+$logo = mysqli_real_escape_string($con,$query1['logo']);
 $imgSrc=$query1['site_url']."/admincp/admin-logo/$logo";
-$site_name = mysql_real_escape_string($query1['site_name']);
+$site_name = mysqli_real_escape_string($con,$query1['site_name']);
 //$imgSrc=$site_url."admincp/admin-logo/$logo";
-$site_name = mysql_real_escape_string($site_name);
+$site_name = mysqli_real_escape_string($con,$site_name);
 $subject = 'Your Account created Successfully'; 
-$phone_no = mysql_real_escape_string($phone_no); 
-$pwd = mysql_real_escape_string($password); 
+$phone_no = mysqli_real_escape_string($con,$phone_no); 
+$pwd = mysqli_real_escape_string($con,$password); 
 $message = '<!DOCTYPE HTML>'. 
 '<head>'. 
 '<meta http-equiv="content-type" content="text/html">'. 
@@ -49,9 +49,9 @@ $message = '<!DOCTYPE HTML>'.
 '</div>'. 
 '</body>'; 
 /*EMAIL TEMPLATE ENDS*/ 
-$to      = mysql_real_escape_string($email_id);             // give to email address 
+$to      = mysqli_real_escape_string($con,$email_id);             // give to email address 
 $subject = 'Account Details - '.$site_name;  //change subject of email 
-$from    =  mysql_real_escape_string($query1['email_id']);                          // give from email address 
+$from    =  mysqli_real_escape_string($con,$query1['email_id']);                          // give from email address 
 // mandatory headers for email message, change if you need something different in your setting. 
 $headers  = "From: " . $from . "\r\n";
 $headers .= "MIME-Version: 1.0\r\n"; 

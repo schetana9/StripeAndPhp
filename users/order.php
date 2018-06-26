@@ -3,8 +3,8 @@
 include("../header.php"); 
 if (isset($_POST['city'], $_POST['services']))
 {
-$city=mysql_real_escape_string($_POST['city']);
-$services=mysql_real_escape_string($_POST['services']);
+$city=mysqli_real_escape_string($con,$_POST['city']);
+$services=mysqli_real_escape_string($con,$_POST['services']);
 }
 else{$city="";$services="";}
 ?>
@@ -65,7 +65,7 @@ $msg="";
           <option value="">None
           </option>
           <?php		
-$res3=mysql_query("select * from sv_city order by city_id");
+$res3=mysqli_query($con,"select * from sv_city order by city_id");
 while($row3=mysql_fetch_array($res3))
 {
 ?>
@@ -102,13 +102,13 @@ while($row3=mysql_fetch_array($res3))
             <option value="">None
             </option>
             <?php		
-$res=mysql_query("select * from sv_services order by services_id");
+$res=mysqli_query($con,"select * from sv_services order by services_id");
 while($row=mysql_fetch_array($res))
 {
-$services_id=mysql_real_escape_string($row['services_id']);
-$sname=mysql_real_escape_string($row['services_name']);
-$query=mysql_fetch_array(mysql_query("select * from sv_services_sub where services_name='$services_id'"));
-$sub_sname=mysql_real_escape_string($query['services_sub_name']);
+$services_id=mysqli_real_escape_string($con,$row['services_id']);
+$sname=mysqli_real_escape_string($con,$row['services_name']);
+$query=mysql_fetch_array(mysqli_query($con,"select * from sv_services_sub where services_name='$services_id'"));
+$sub_sname=mysqli_real_escape_string($con,$query['services_sub_name']);
 ?>
             <option value="<?php echo $row['services_id'];?>" 
                     <?php if($services==$row['services_id']) echo "selected='selected'"; ?>>
@@ -127,7 +127,7 @@ $sub_sname=mysql_real_escape_string($query['services_sub_name']);
           <option value="">None
           </option>	
           <?php	
-$res1=mysql_query("select * from sv_services_sub where services_name='$services'");
+$res1=mysqli_query($con,"select * from sv_services_sub where services_name='$services'");
 while($row1=mysql_fetch_array($res1))
 {			
 ?>
@@ -197,7 +197,7 @@ while($row1=mysql_fetch_array($res1))
 	<option value="cash">Cash</option>
   
 	<?php 
-	$paypal=mysql_fetch_array(mysql_query("select * from sv_admin_login"));
+	$paypal=mysql_fetch_array(mysqli_query($con,"select * from sv_admin_login"));
 	$paypal_id=$paypal['paypal_id'];
 	if($paypal_id!=="")
 	{
@@ -206,7 +206,7 @@ while($row1=mysql_fetch_array($res1))
 	<?php } ?>
 <!-- stripe payment mode -->
 <?php 
-	$stripe=mysql_fetch_array(mysql_query("select * from sv_admin_login"));
+	$stripe=mysql_fetch_array(mysqli_query($con,"select * from sv_admin_login"));
 	$stripe_client_id=$stripe['stripe_client_id'];
 	if($stripe_client_id!=="")
 	{
@@ -273,11 +273,11 @@ while($row1=mysql_fetch_array($res1))
 @session_start();
 if(isset($_SESSION['phone_no']))
 {		
-$phone_no=mysql_real_escape_string($_SESSION['phone_no']);
-$query=mysql_fetch_array(mysql_query("select * from sv_user_profile where phone_no='$phone_no'"));
-$address=mysql_real_escape_string($query['address']);		
-$name=mysql_real_escape_string($query['name']);
-$pno=mysql_real_escape_string($query['phone_no']);
+$phone_no=mysqli_real_escape_string($con,$_SESSION['phone_no']);
+$query=mysql_fetch_array(mysqli_query($con,"select * from sv_user_profile where phone_no='$phone_no'"));
+$address=mysqli_real_escape_string($con,$query['address']);		
+$name=mysqli_real_escape_string($con,$query['name']);
+$pno=mysqli_real_escape_string($con,$query['phone_no']);
 }	
 ?>
 <body class="splash-index">
@@ -333,7 +333,7 @@ $msg="";
                   <option value="">None
                   </option>
                   <?php		
-$res3=mysql_query("select * from sv_city order by city_id");
+$res3=mysqli_query($con,"select * from sv_city order by city_id");
 while($row3=mysql_fetch_array($res3))
 {
 ?>
@@ -368,7 +368,7 @@ while($row3=mysql_fetch_array($res3))
                 <option value="">None
                 </option>
                 <?php		
-$res=mysql_query("select * from sv_services order by services_id");
+$res=mysqli_query($con,"select * from sv_services order by services_id");
 while($row=mysql_fetch_array($res))
 {
 ?>
@@ -389,7 +389,7 @@ while($row=mysql_fetch_array($res))
               <option value="">None
               </option>
               <?php	
-$res1=mysql_query("select * from sv_services_sub where services_name='$services'");
+$res1=mysqli_query($con,"select * from sv_services_sub where services_name='$services'");
 while($row1=mysql_fetch_array($res1))
 {			
 ?>
@@ -463,7 +463,7 @@ while($row1=mysql_fetch_array($res1))
 	<option value="cash">Cash</option>
   
   <?php 
-	$paypal=mysql_fetch_array(mysql_query("select * from sv_admin_login"));
+	$paypal=mysql_fetch_array(mysqli_query($con,"select * from sv_admin_login"));
 	$paypal_id=$paypal['paypal_id'];
 	if($paypal_id!=="")
 	{
@@ -473,7 +473,7 @@ while($row1=mysql_fetch_array($res1))
   
 <!-- stripe payment mode -->
   <?php 
-	$stripe=mysql_fetch_array(mysql_query("select * from sv_admin_login"));
+	$stripe=mysql_fetch_array(mysqli_query($con,"select * from sv_admin_login"));
 	$stripe_client_id=$stripe['stripe_client_id'];
 	if($stripe_client_id!=="")
 	{

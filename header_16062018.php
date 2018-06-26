@@ -1,15 +1,15 @@
 <html>
  <?php 
  include("connection.php");
- $res=mysql_fetch_array(mysql_query("select * from sv_admin_login"));        
-    $admin_email=mysql_real_escape_string($res['email_id']);
-    $site_name=mysql_real_escape_string($res['site_name']);
-    $logo=mysql_real_escape_string($res['logo']);    
-    $favicon=mysql_real_escape_string($res['favicon']);
-    $site_desc=mysql_real_escape_string($res['site_desc']);
-    $keyword=mysql_real_escape_string($res['keyword']);
-    $site_url=mysql_real_escape_string($res['site_url']);
-	$currency_code=mysql_real_escape_string($res['currency_mode']);
+ $res=mysql_fetch_array(mysqli_query($con,"select * from sv_admin_login"));        
+    $admin_email=mysqli_real_escape_string($con,$res['email_id']);
+    $site_name=mysqli_real_escape_string($con,$res['site_name']);
+    $logo=mysqli_real_escape_string($con,$res['logo']);    
+    $favicon=mysqli_real_escape_string($con,$res['favicon']);
+    $site_desc=mysqli_real_escape_string($con,$res['site_desc']);
+    $keyword=mysqli_real_escape_string($con,$res['keyword']);
+    $site_url=mysqli_real_escape_string($con,$res['site_url']);
+	$currency_code=mysqli_real_escape_string($con,$res['currency_mode']);
 	
  ?>
  <title><?php echo $site_name;?></title>
@@ -74,8 +74,8 @@
                                     @session_start();
                                     if(isset($_SESSION['phone_no']))
                                     {    
-                                        $phone_no=mysql_real_escape_string($_SESSION['phone_no']);            
-                                        $query=mysql_fetch_array(mysql_query("select * from sv_user_profile where phone_no='$phone_no'"));
+                                        $phone_no=mysqli_real_escape_string($con,$_SESSION['phone_no']);            
+                                        $query=mysql_fetch_array(mysqli_query($con,"select * from sv_user_profile where phone_no='$phone_no'"));
                                 ?>
                                  <li class="dropdown dropdown-submenu user_menu"><a href="<?php echo $site_url; ?>/users/dashboard.php" class="dropdown-toggle nav__link" data-toggle="dropdown"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;<?php echo $query['name'];?> &nbsp; <span class="caret"></span></a>
                                 <ul class="dropdown-menu">

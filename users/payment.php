@@ -15,14 +15,14 @@ if(isset($secure)){
 //echo $stripe_source;die;
 //src_1CdiKyBpiqFh0qF19stFnjgB
 //src_1CdiO5BpiqFh0qF1JIAggWks
-	$results = mysql_query("select * from sv_admin_login");
+	$results = mysqli_query($con,"select * from sv_admin_login");
 	$row=mysql_fetch_array($results);
 	$currency = $row['currency_mode'];
 	$stripe_secret_key = $row['stripe_secret_key'];
 
 	
 
-	$results = mysql_query("select * from sv_user_profile where signup_id='$signup_id'");
+	$results = mysqli_query($con,"select * from sv_user_profile where signup_id='$signup_id'");
 	$row=mysql_fetch_array($results);
 	$db_customer_token = $row['customer_token'];
 	
@@ -38,13 +38,13 @@ if(isset($secure)){
 			$customer_token = $customer->id;
 			$db_customer_token = $customer_token;			
 			
-			mysql_query("update sv_user_profile set customer_token='$customer_token' where signup_id='$signup_id'");    
+			mysqli_query($con,"update sv_user_profile set customer_token='$customer_token' where signup_id='$signup_id'");    
 	}
 
 	if($secure == "required" || $secure == "recommended")
 	{
 		
-		$results = mysql_query("select * from sv_user_order where order_id='$order_id'");
+		$results = mysqli_query($con,"select * from sv_user_order where order_id='$order_id'");
 		$row=mysql_fetch_array($results);
 		$price=$row['price'];		
 		$final_price = (int)$price*100;		
@@ -70,12 +70,12 @@ if(isset($secure)){
 
 	}else{
 
-			$results = mysql_query("select * from sv_user_profile where signup_id='$signup_id'");
+			$results = mysqli_query($con,"select * from sv_user_profile where signup_id='$signup_id'");
 			$row=mysql_fetch_array($results);
 			$db_customer_token = $row['customer_token'];
 
 		
-			$results = mysql_query("select * from sv_user_order where order_id='$order_id'");
+			$results = mysqli_query($con,"select * from sv_user_order where order_id='$order_id'");
 			$row=mysql_fetch_array($results);
 			$price=$row['price'];		
 			$final_price = (int)$price*100;
@@ -94,7 +94,7 @@ if(isset($secure)){
 				$customer_token_id = $charge->customer;
 				$user_id = $signup_id;
 				
-				mysql_query("insert into sv_charge(charge_token_id,amount,customer_token_id,user_id)values('$charge_token_id','$amount','$customer_token_id','$user_id')");
+				mysqli_query($con,"insert into sv_charge(charge_token_id,amount,customer_token_id,user_id)values('$charge_token_id','$amount','$customer_token_id','$user_id')");
 				header('location:dashboard.php?msg=paymentsuccess');	
 
 			}catch(error $e){
@@ -128,9 +128,9 @@ include ('../header.php');
 <?php
 if(isset($_SESSION['phone_no']))
 { 
-$order_id=  mysql_real_escape_string($_SESSION[ "order_id"]);
+$order_id=  mysqli_real_escape_string($con,$_SESSION[ "order_id"]);
 //Set useful variables for paypal form  
-//$query=mysql_fetch_array(mysql_query("select  * from sv_admin_login"));
+//$query=mysql_fetch_array(mysqli_query($con,"select  * from sv_admin_login"));
 //$site_mode=$query['paypal_site_mode'];
 //$cur_code=$query['currency_mode'];
 
@@ -150,14 +150,14 @@ $order_id=  mysql_real_escape_string($_SESSION[ "order_id"]);
 </section>
 <!--fetch products from the database-->
 <?php
-		$results = mysql_query("select * from sv_user_order where order_id='$order_id'");
+		$results = mysqli_query($con,"select * from sv_user_order where order_id='$order_id'");
 		while($row=mysql_fetch_array($results))
 		{
-			$services_id=mysql_real_escape_string($row['services']);
-			$sub_services_id=mysql_real_escape_string($row['sub_services']);
-			$services=mysql_fetch_array(mysql_query("select * from sv_services where services_id='$services_id'"));
+			$services_id=mysqli_real_escape_string($con,$row['services']);
+			$sub_services_id=mysqli_real_escape_string($con,$row['sub_services']);
+			$services=mysql_fetch_array(mysqli_query($con,"select * from sv_services where services_id='$services_id'"));
 			$sname=$services['services_name'];
-			$sub_services=mysql_fetch_array(mysql_query("select * from sv_services_sub where sid='$sub_services_id'"));
+			$sub_services=mysql_fetch_array(mysqli_query($con,"select * from sv_services_sub where sid='$sub_services_id'"));
 			$sub_sname=$sub_services['services_sub_name'];
 			$price=$row['price'];
 			$payment_mode=$row['payment_mode'];
