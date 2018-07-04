@@ -258,6 +258,28 @@ function user_pho_no(str)
 	}
 	return error;
 }
+function user_mob_no(str)
+{
+	var error="";	
+	var illegalChars = /^[0-9- +]+$/;	
+	if(str=="")	
+	{	
+		var error="Enter phone no";	
+		document.getElementById("mob_no_err").innerHTML="Enter Mobile No";
+	}	
+	else if (!illegalChars.test(str)) 
+	{	
+		error="Enter Number Only";		
+		document.getElementById("mob_no_err").innerHTML="Enter Number Only"; 
+	}		
+	else
+	{
+		error="";
+		document.getElementById("mob_no_err").innerHTML="";
+	}
+	return error;
+}
+
 function user_pwd(str)
 {	
 	var error="";
@@ -573,8 +595,8 @@ function price_select(str)
 	xmlHttp.send(null);      
 }
 //Become a cleaner Function Start Here	
-function user_cemail(str)
-{	
+function user_cemail(str,str1)
+{	 
 	var error="";	
 	var illegalChars = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 	if(str=="")
@@ -588,9 +610,14 @@ function user_cemail(str)
 		document.getElementById("cemail_err").innerHTML="Enter Valid Email ID";
 	}	
 	else	
-	{		
-		error="";	
-		document.getElementById("cemail_err").innerHTML="";	
+	{	
+		if(str == str1) {
+			error="";	
+			document.getElementById("cemail_err").innerHTML="";	
+		}else{
+			error="Email should match with confirm email";	
+			document.getElementById("cemail_err").innerHTML="Email should match with confirm email";
+		}
 	}	
 	return error;
 }
@@ -672,13 +699,13 @@ function user_paid_work(str)
 		{
 			var error="";	
 			if(str=="")	{	
-			var error="Enter Nationality";	
-			document.getElementById("nation_err").innerHTML="Enter Nationality";	
+				var error="Enter Nationality";	
+				document.getElementById("nation_err").innerHTML="Enter Nationality";	
 			}	
 			else	
 			{	
-		error="";	
-		document.getElementById("nation_err").innerHTML="";	}return error; 
+				error="";	
+				document.getElementById("nation_err").innerHTML="";	}return error; 
 		} 
 		
 function cleaner(str)
@@ -700,11 +727,24 @@ function cleaner(str)
 	var abt=document.getElementById("abt").value;
 	var token=document.getElementById("token").value;
 	
+	var competen=document.getElementById("competen").value;
+	var qualifi=document.getElementById("qualifi").value;
+	
+	var type=document.getElementById("acctType").value;
+	
+	var buis_name=document.getElementById("buis_name").value;
+	var buis_id=document.getElementById("buis_id").value;
+	
+	var passport=  'tttt';//document.getElementById("passport").value;
+	var nat_id=document.getElementById("nat_id").value;
+	var res_permit=document.getElementById("res_permit").value;
+	
+	
 	msg+=user_email(email);
-	msg+=user_cemail(cemail);	
+	msg+=user_cemail(cemail,email);	
 	msg+=user_name(fname);	
 	msg+=user_lname(lname);		
-	msg+=user_pho_no(mob_no);	
+	msg+=user_mob_no(mob_no);	
 	msg+=user_post_code(post_code);
 	msg+=user_exp(exp);
 	msg+=user_paid_work(paid_work);	
@@ -718,19 +758,34 @@ function cleaner(str)
 	{
 	if(str=="add")
 	{
-		 var url="cleaner_add.php?email="+email+"&cemail="+cemail+"&fname="+fname+"&lname="+lname+"&mob_no="+mob_no+"&post_code="+post_code+"&exp="+exp+"&paid_work="+paid_work+"&gender="+gender+"&dob="+dob+"&nation="+nation+"&address="+address+"&suburb="+suburb+"&abt="+abt+"&action="+str+"&token="+token;
-	}
+		var part_url = '';
+		if(type == 'company'  || type == 'association') {
+		 		var part_url = "&buis_name="+buis_name+"&buis_id="+buis_id;
+		}
+		 var url="cleaner_add.php?email="+email+"&cemail="+cemail+"&fname="+fname+"&lname="+lname+"&mob_no="+mob_no+"&post_code="+post_code+"&exp="+exp+"&paid_work="+paid_work+"&gender="+gender+"&dob="+dob+"&nation="+nation+"&address="+address+"&suburb="+suburb+"&abt="+abt+"&action="+str+"&token="+token+"&type="+type+part_url+"&passport="+passport+"&nat_id="+nat_id+"&res_permit="+res_permit;
+  
+ }
 	xmlHttp.onreadystatechange=function()
- 	        {	   
+ 	        {	 
+		 
 				if(xmlHttp.readyState==4 && xmlHttp.status==200)
   				{
 					var msg=xmlHttp.responseText.trim();  
-						
-					if(msg=="Inserted")
+ 					if(msg=="Inserted")
 					{				
 						var msg="Inserted";
 						window.location="apply.php?msg="+msg;				
-					}					
+					}
+				/*	else if(msg=="EmailExist")
+					{
+						document.getElementById("email_err").innerHTML="Email address already exist";
+						 window.location="apply.php?msg="+msg;				
+					}
+					else if(msg=="PhoneExist")
+					{
+						document.getElementById("mob_no_err").innerHTML="Mobile number already exist";
+						 window.location="apply.php?msg="+msg;				
+					}*/
 					else if(msg=="Error")
 					{
 						window.location="apply.php?msg="+msg;				
@@ -928,3 +983,42 @@ catch (e)
   } 
 return xmlHttp;
 }
+
+function callIdentity(){         
+	var str = $('#nation').val();
+	if(str == 'France' || str == 'FRANCE' || str == 'france' || str == 'fr' || str == 'FR') {
+		$('#nat_id_label').show();	
+		$('#nat_id').show().attr("required", "required");
+		$('#res_permit').hide().removeAttr("required");
+		$('#res_permit_label').hide();
+	}
+	else{
+		$('#res_permit_label').show();
+		$('#res_permit').show().attr("required", "required");
+		$('#nat_id').hide().removeAttr("required");
+		$('#nat_id_label').hide();
+	}
+ }
+ 
+ 
+function checkSPEmailExist(email){   
+
+
+ a = window.location.origin;
+ 
+ alert(a + "/rud/users/checkExist.php");      
+	  var a;
+	  
+           
+                
+      $.ajax({
+            method: "POST",
+          url: a + "/rud/users/checkExist.php",
+            async:false,
+            data: { 'action': 'checkEmailalreadyexist','email':email},
+            success: function (data) {
+                a = data;
+            }
+        });
+        return a;
+ }

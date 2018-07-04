@@ -66,7 +66,7 @@ $msg="";
           </option>
           <?php		
 $res3=mysqli_query($con,"select * from sv_city order by city_id");
-while($row3=mysql_fetch_array($res3))
+while($row3=mysqli_fetch_array($res3))
 {
 ?>
           <option value="<?php echo $row3['city_id'];?>" 
@@ -103,11 +103,11 @@ while($row3=mysql_fetch_array($res3))
             </option>
             <?php		
 $res=mysqli_query($con,"select * from sv_services order by services_id");
-while($row=mysql_fetch_array($res))
+while($row=mysqli_fetch_array($res))
 {
 $services_id=mysqli_real_escape_string($con,$row['services_id']);
 $sname=mysqli_real_escape_string($con,$row['services_name']);
-$query=mysql_fetch_array(mysqli_query($con,"select * from sv_services_sub where services_name='$services_id'"));
+$query=mysqli_fetch_array(mysqli_query($con,"select * from sv_services_sub where services_name='$services_id'"));
 $sub_sname=mysqli_real_escape_string($con,$query['services_sub_name']);
 ?>
             <option value="<?php echo $row['services_id'];?>" 
@@ -128,7 +128,7 @@ $sub_sname=mysqli_real_escape_string($con,$query['services_sub_name']);
           </option>	
           <?php	
 $res1=mysqli_query($con,"select * from sv_services_sub where services_name='$services'");
-while($row1=mysql_fetch_array($res1))
+while($row1=mysqli_fetch_array($res1))
 {			
 ?>
           <option value="<?php echo $row1['sid'];?>">
@@ -197,7 +197,7 @@ while($row1=mysql_fetch_array($res1))
 	<option value="cash">Cash</option>
   
 	<?php 
-	$paypal=mysql_fetch_array(mysqli_query($con,"select * from sv_admin_login"));
+	$paypal=mysqli_fetch_array(mysqli_query($con,"select * from sv_admin_login"));
 	$paypal_id=$paypal['paypal_id'];
 	if($paypal_id!=="")
 	{
@@ -206,7 +206,7 @@ while($row1=mysql_fetch_array($res1))
 	<?php } ?>
 <!-- stripe payment mode -->
 <?php 
-	$stripe=mysql_fetch_array(mysqli_query($con,"select * from sv_admin_login"));
+	$stripe=mysqli_fetch_array(mysqli_query($con,"select * from sv_admin_login"));
 	$stripe_client_id=$stripe['stripe_client_id'];
 	if($stripe_client_id!=="")
 	{
@@ -274,7 +274,7 @@ while($row1=mysql_fetch_array($res1))
 if(isset($_SESSION['phone_no']))
 {		
 $phone_no=mysqli_real_escape_string($con,$_SESSION['phone_no']);
-$query=mysql_fetch_array(mysqli_query($con,"select * from sv_user_profile where phone_no='$phone_no'"));
+$query=mysqli_fetch_array(mysqli_query($con,"select * from sv_user_profile where phone_no='$phone_no'"));
 $address=mysqli_real_escape_string($con,$query['address']);		
 $name=mysqli_real_escape_string($con,$query['name']);
 $pno=mysqli_real_escape_string($con,$query['phone_no']);
@@ -334,7 +334,7 @@ $msg="";
                   </option>
                   <?php		
 $res3=mysqli_query($con,"select * from sv_city order by city_id");
-while($row3=mysql_fetch_array($res3))
+while($row3=mysqli_fetch_array($res3))
 {
 ?>
                   <option value="<?php echo $row3['city_id'];?>" 
@@ -369,7 +369,7 @@ while($row3=mysql_fetch_array($res3))
                 </option>
                 <?php		
 $res=mysqli_query($con,"select * from sv_services order by services_id");
-while($row=mysql_fetch_array($res))
+while($row=mysqli_fetch_array($res))
 {
 ?>
                 <option value="<?php echo $row['services_id'];?>" 
@@ -390,7 +390,7 @@ while($row=mysql_fetch_array($res))
               </option>
               <?php	
 $res1=mysqli_query($con,"select * from sv_services_sub where services_name='$services'");
-while($row1=mysql_fetch_array($res1))
+while($row1=mysqli_fetch_array($res1))
 {			
 ?>
               <option value="<?php echo $row1['sid'];?>">
@@ -463,7 +463,7 @@ while($row1=mysql_fetch_array($res1))
 	<option value="cash">Cash</option>
   
   <?php 
-	$paypal=mysql_fetch_array(mysqli_query($con,"select * from sv_admin_login"));
+	$paypal=mysqli_fetch_array(mysqli_query($con,"select * from sv_admin_login"));
 	$paypal_id=$paypal['paypal_id'];
 	if($paypal_id!=="")
 	{
@@ -473,7 +473,7 @@ while($row1=mysql_fetch_array($res1))
   
 <!-- stripe payment mode -->
   <?php 
-	$stripe=mysql_fetch_array(mysqli_query($con,"select * from sv_admin_login"));
+	$stripe=mysqli_fetch_array(mysqli_query($con,"select * from sv_admin_login"));
 	$stripe_client_id=$stripe['stripe_client_id'];
 	if($stripe_client_id!=="")
 	{

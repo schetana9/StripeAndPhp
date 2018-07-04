@@ -17,7 +17,7 @@
 <?php 
  include("../connection.php");
     $res1=mysqli_query($con,"select * from sv_services");
-    while($row1=mysql_fetch_array($res1))
+    while($row1=mysqli_fetch_array($res1))
     {
                     $services_name=mysqli_real_escape_string($con,$row1['services_name']);    
                     $service_img=mysqli_real_escape_string($con,$row1['service_img']);

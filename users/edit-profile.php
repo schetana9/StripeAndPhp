@@ -9,7 +9,7 @@ if(isset($_SESSION['phone_no']))
 if(isset($_SESSION['phone_no']))
 {		
 $phone_no=mysqli_real_escape_string($con,$_SESSION['phone_no']);
-$query=mysql_fetch_array(mysqli_query($con,"select * from sv_user_profile where phone_no='$phone_no'"));
+$query=mysqli_fetch_array(mysqli_query($con,"select * from sv_user_profile where phone_no='$phone_no'"));
 $address=mysqli_real_escape_string($con,$query['address']);	
 }	
 ?>

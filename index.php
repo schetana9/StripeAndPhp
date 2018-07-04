@@ -38,7 +38,7 @@ Les services à la personne est notre metier!<br /></span>
                         <option value="">Votre departement</option>
                             <?php        
                                 $res=mysqli_query($con,"select * from sv_city order by city_id");
-                                while($row=mysql_fetch_array($res))
+                                while($row=mysqli_fetch_array($res))
                                 {
                                     $city_id=mysqli_real_escape_string($con,$row['city_id']);
                                     $cname=mysqli_real_escape_string($con,$row['city_name']);            
@@ -55,7 +55,7 @@ Les services à la personne est notre metier!<br /></span>
                         <option value="">Sélectionner votre service</option>
                         <?php        
                             $res=mysqli_query($con,"select * from sv_services order by services_id");
-                            while($row=mysql_fetch_array($res))
+                            while($row=mysqli_fetch_array($res))
                             {
                                 $services_id=mysqli_real_escape_string($con,$row['services_id']);
                                 $sname=mysqli_real_escape_string($con,$row['services_name']);            
@@ -69,7 +69,7 @@ Les services à la personne est notre metier!<br /></span>
                 </div>    
                 <div class="col-md-4 col-sm-4">
                 <!--<input type="submit" name="commit" value="Book Now" class="btn-primary signup__button booknow " data-checkpostcode="true" />-->
-				<button type="button" class="btn-primary signup__button sv_booknow" onclick="javascript:booking_function(this.value);">Réservez</button>
+				<button type="button" class="btn-primary signup__button sv_booknow" onClick="javascript:booking_function(this.value);">Réservez</button>
                 </div>
         </div>
     </form>
@@ -92,8 +92,8 @@ Les services à la personne est notre metier!<br /></span>
 <div class="col-lg-12">
             <?php 
                 $res1=mysqli_query($con,"select * from sv_services ORDER BY services_id ASC limit 0,4");
-                $numrow=mysql_num_rows($res1);
-                while($row1=mysql_fetch_array($res1))
+                $numrow=mysqli_num_rows($res1);
+                while($row1=mysqli_fetch_array($res1))
                 {
                     $services_name=mysqli_real_escape_string($con,$row1['services_name']);    
                     $service_img=mysqli_real_escape_string($con,$row1['service_img']);
@@ -110,7 +110,7 @@ Les services à la personne est notre metier!<br /></span>
  <div class="min-space"></div>
 <?php 
 $res2=mysqli_query($con,"select * from sv_services ORDER BY services_id ASC");
-$numrow=mysql_num_rows($res2);
+$numrow=mysqli_num_rows($res2);
 if($numrow>='5')
 {
 ?>
@@ -122,7 +122,7 @@ if($numrow>='5')
 
 
 <?php 
-$query=mysql_fetch_array(mysqli_query($con,"select * from sv_pages where id=1"));
+$query=mysqli_fetch_array(mysqli_query($con,"select * from sv_pages where id=1"));
 $content=$query['page_content'];
 $page_name=$query['page_name'];
 ?>

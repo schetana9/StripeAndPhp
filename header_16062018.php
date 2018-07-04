@@ -1,7 +1,7 @@
 <html>
  <?php 
  include("connection.php");
- $res=mysql_fetch_array(mysqli_query($con,"select * from sv_admin_login"));        
+ $res=mysqli_fetch_array(mysqli_query($con,"select * from sv_admin_login"));        
     $admin_email=mysqli_real_escape_string($con,$res['email_id']);
     $site_name=mysqli_real_escape_string($con,$res['site_name']);
     $logo=mysqli_real_escape_string($con,$res['logo']);    
@@ -75,7 +75,7 @@
                                     if(isset($_SESSION['phone_no']))
                                     {    
                                         $phone_no=mysqli_real_escape_string($con,$_SESSION['phone_no']);            
-                                        $query=mysql_fetch_array(mysqli_query($con,"select * from sv_user_profile where phone_no='$phone_no'"));
+                                        $query=mysqli_fetch_array(mysqli_query($con,"select * from sv_user_profile where phone_no='$phone_no'"));
                                 ?>
                                  <li class="dropdown dropdown-submenu user_menu"><a href="<?php echo $site_url; ?>/users/dashboard.php" class="dropdown-toggle nav__link" data-toggle="dropdown"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;<?php echo $query['name'];?> &nbsp; <span class="caret"></span></a>
                                 <ul class="dropdown-menu">

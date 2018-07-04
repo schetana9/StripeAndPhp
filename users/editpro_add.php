@@ -19,7 +19,7 @@ echo "Updated";
 else
 {
 $res=mysqli_query($con,"select * from sv_user_profile where phone_no='$pno'");
-$numrow=mysql_num_rows($res);
+$numrow=mysqli_num_rows($res);
 if($numrow=="")
 {
 if($type=='add')

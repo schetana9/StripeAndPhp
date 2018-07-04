@@ -9,7 +9,7 @@ if(isset($_SESSION['phone_no']))
 if(isset($_SESSION['phone_no']))
 {		
 $phone_no=mysqli_real_escape_string($con,$_SESSION['phone_no']);
-$query=mysql_fetch_array(mysqli_query($con,"select * from sv_user_profile where phone_no='$phone_no'"));
+$query=mysqli_fetch_array(mysqli_query($con,"select * from sv_user_profile where phone_no='$phone_no'"));
 $address=mysqli_real_escape_string($con,$query['address']);		
 }	
 ?>
@@ -67,16 +67,16 @@ else{$postal_code="";}
             <?php
 				$sno=0;
 				$res=mysqli_query($con,"select * from sv_user_order where phone_no='$phone_no' ORDER BY order_id DESC");
-				while($row=mysql_fetch_array($res))
+				while($row=mysqli_fetch_array($res))
 				{
 					$sno++;
 					$services=mysqli_real_escape_string($con,$row['services']);
 					$sub_id=mysqli_real_escape_string($con,$row['sub_services']);
-					$query=mysql_fetch_array(mysqli_query($con,"select * from sv_services where services_id='$services'"));			
+					$query=mysqli_fetch_array(mysqli_query($con,"select * from sv_services where services_id='$services'"));			
 					$date=mysqli_real_escape_string($con,date("d-m-Y",strtotime($row['date'])));	
 					$city_id=mysqli_real_escape_string($con,$row['city_name']);
-					$city=mysql_fetch_array(mysqli_query($con,"select * from sv_city where city_id='$city_id'"));
-					$sub=mysql_fetch_array(mysqli_query($con,"select * from sv_services_sub where sid='$sub_id'"));			
+					$city=mysqli_fetch_array(mysqli_query($con,"select * from sv_city where city_id='$city_id'"));
+					$sub=mysqli_fetch_array(mysqli_query($con,"select * from sv_services_sub where sid='$sub_id'"));			
 			?>  
             <tbody>
               <tr>

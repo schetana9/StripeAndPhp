@@ -29,24 +29,24 @@ else
 {*/
 mysqli_query($con,"insert into sv_user_order(name,address,services,sub_services,date,order_time,requirement,order_phone_no,phone_no,city_name,price,payment_mode,payment_status)values('$name','$address','$services','$sub_services','$date1','$time','$req','$order_pno','$phone_no','$city_name','$price','$payment_mode','pending')");
 /*  ---------- mail function  ---------*/
-$query=mysql_fetch_array(mysqli_query($con,"select * from sv_user_profile where phone_no='$phone_no'"));
+$query=mysqli_fetch_array(mysqli_query($con,"select * from sv_user_profile where phone_no='$phone_no'"));
 $email_id=mysqli_real_escape_string($con,$query['email_id']);
-$query1=mysql_fetch_array(mysqli_query($con,"select * from sv_admin_login"));
+$query1=mysqli_fetch_array(mysqli_query($con,"select * from sv_admin_login"));
 $site_url=mysqli_real_escape_string($con,$query1['site_url']);
 $logo=mysqli_real_escape_string($con,$query1['logo']);
 $imgSrc=$site_url."/admincp/admin-logo/$logo";
 //$imgSrc   = $query1['logo'];
 $site_name = mysqli_real_escape_string($con,$query1['site_name']);
-$order=mysql_fetch_array(mysqli_query($con,"select * from sv_user_order where phone_no='$phone_no' order by order_id DESC limit 1"));
+$order=mysqli_fetch_array(mysqli_query($con,"select * from sv_user_order where phone_no='$phone_no' order by order_id DESC limit 1"));
 $subject= 'Order has been created Successfully'; 
 $city_name=mysqli_real_escape_string($con,$order['city_name']); 
 $address= mysqli_real_escape_string($con,$order['address']); 
 //$city=$order['city']; 
 $service_id=mysqli_real_escape_string($con,$order['services']); 
-$service=mysql_fetch_array(mysqli_query($con,"select * from sv_services where services_id='$service_id'"));
+$service=mysqli_fetch_array(mysqli_query($con,"select * from sv_services where services_id='$service_id'"));
 $service_name=mysqli_real_escape_string($con,$service['services_name']);
 $sub_services_id=mysqli_real_escape_string($con,$order['sub_services']);
-$sub_services=mysql_fetch_array(mysqli_query($con,"select * from sv_services_sub where sid='$sub_services_id'"));
+$sub_services=mysqli_fetch_array(mysqli_query($con,"select * from sv_services_sub where sid='$sub_services_id'"));
 $sub_services_name=$sub_services['services_sub_name'];
 $date=mysqli_real_escape_string($con,$order['date']); 
 $order_time=mysqli_real_escape_string($con,$order['order_time']); 

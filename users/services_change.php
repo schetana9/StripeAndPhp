@@ -7,7 +7,7 @@
 		$name='';
 		$id='';
 		$res=mysqli_query($con,"select * from sv_services_sub where services_name='$sub_id'");
-		while($row=mysql_fetch_array($res))
+		while($row=mysqli_fetch_array($res))
 		{
 			if($type=="name")
 			{

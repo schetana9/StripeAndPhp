@@ -16,14 +16,14 @@ if(isset($secure)){
 //src_1CdiKyBpiqFh0qF19stFnjgB
 //src_1CdiO5BpiqFh0qF1JIAggWks
 	$results = mysqli_query($con,"select * from sv_admin_login");
-	$row=mysql_fetch_array($results);
+	$row=mysqli_fetch_array($results);
 	$currency = $row['currency_mode'];
 	$stripe_secret_key = $row['stripe_secret_key'];
 
 	
 
 	$results = mysqli_query($con,"select * from sv_user_profile where signup_id='$signup_id'");
-	$row=mysql_fetch_array($results);
+	$row=mysqli_fetch_array($results);
 	$db_customer_token = $row['customer_token'];
 	
 	if($db_customer_token == ""){
@@ -45,7 +45,7 @@ if(isset($secure)){
 	{
 		
 		$results = mysqli_query($con,"select * from sv_user_order where order_id='$order_id'");
-		$row=mysql_fetch_array($results);
+		$row=mysqli_fetch_array($results);
 		$price=$row['price'];		
 		$final_price = (int)$price*100;		
 		
@@ -71,12 +71,12 @@ if(isset($secure)){
 	}else{
 
 			$results = mysqli_query($con,"select * from sv_user_profile where signup_id='$signup_id'");
-			$row=mysql_fetch_array($results);
+			$row=mysqli_fetch_array($results);
 			$db_customer_token = $row['customer_token'];
 
 		
 			$results = mysqli_query($con,"select * from sv_user_order where order_id='$order_id'");
-			$row=mysql_fetch_array($results);
+			$row=mysqli_fetch_array($results);
 			$price=$row['price'];		
 			$final_price = (int)$price*100;
 
@@ -130,7 +130,7 @@ if(isset($_SESSION['phone_no']))
 { 
 $order_id=  mysqli_real_escape_string($con,$_SESSION[ "order_id"]);
 //Set useful variables for paypal form  
-//$query=mysql_fetch_array(mysqli_query($con,"select  * from sv_admin_login"));
+//$query=mysqli_fetch_array(mysqli_query($con,"select  * from sv_admin_login"));
 //$site_mode=$query['paypal_site_mode'];
 //$cur_code=$query['currency_mode'];
 
@@ -151,13 +151,13 @@ $order_id=  mysqli_real_escape_string($con,$_SESSION[ "order_id"]);
 <!--fetch products from the database-->
 <?php
 		$results = mysqli_query($con,"select * from sv_user_order where order_id='$order_id'");
-		while($row=mysql_fetch_array($results))
+		while($row=mysqli_fetch_array($results))
 		{
 			$services_id=mysqli_real_escape_string($con,$row['services']);
 			$sub_services_id=mysqli_real_escape_string($con,$row['sub_services']);
-			$services=mysql_fetch_array(mysqli_query($con,"select * from sv_services where services_id='$services_id'"));
+			$services=mysqli_fetch_array(mysqli_query($con,"select * from sv_services where services_id='$services_id'"));
 			$sname=$services['services_name'];
-			$sub_services=mysql_fetch_array(mysqli_query($con,"select * from sv_services_sub where sid='$sub_services_id'"));
+			$sub_services=mysqli_fetch_array(mysqli_query($con,"select * from sv_services_sub where sid='$sub_services_id'"));
 			$sub_sname=$sub_services['services_sub_name'];
 			$price=$row['price'];
 			$payment_mode=$row['payment_mode'];

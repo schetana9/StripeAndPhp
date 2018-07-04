@@ -10,11 +10,11 @@ $type=mysqli_real_escape_string($con,$_REQUEST['action']);
 if($type=='add')
 {
 mysqli_query($con,"insert into  sv_contact(name,email,contact_no,msg)values('$name','$email','$pho_no','$msg')");
-$query1=mysql_fetch_array(mysqli_query($con,"select * from sv_admin_login"));
+$query1=mysqli_fetch_array(mysqli_query($con,"select * from sv_admin_login"));
 $site_url=mysqli_real_escape_string($con,$query1['site_url']);
 $logo=mysqli_real_escape_string($con,$query1['logo']);
 $imgSrc=$site_url."/admincp/admin-logo/$logo";
-$contact=mysql_fetch_array(mysqli_query($con,"select * from sv_contact order by id DESC limit 1"));		
+$contact=mysqli_fetch_array(mysqli_query($con,"select * from sv_contact order by id DESC limit 1"));		
 $site_name = mysqli_real_escape_string($con,$query1['site_name']);
 $subject= 'New Enquiry Received'; 
 $name=mysqli_real_escape_string($con,$contact['name']); 

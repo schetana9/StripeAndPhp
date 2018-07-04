@@ -18,7 +18,7 @@ $payment_mode = mysqli_real_escape_string($con,$_REQUEST['payment_mode']);
 $pass = mysqli_real_escape_string($con,md5($pwd));
 $type = mysqli_real_escape_string($con,$_REQUEST['action']);
 /*$cname=mysqli_query($con,"select * from sv_city where city_name='$city_name'");
-$numrow=mysql_num_rows($cname);
+$numrow=mysqli_num_rows($cname);
 if($numrow=="")
 {
 echo "Invalid City";
@@ -26,12 +26,12 @@ echo "Invalid City";
 else
 {*/
 $res=mysqli_query($con,"select * from sv_user_profile where phone_no='$phone_no'");
-$numrow=mysql_num_rows($res);
+$numrow=mysqli_num_rows($res);
 if($numrow=="")
 {
 mysqli_query($con,"insert into sv_user_profile(name,password,phone_no,email_id,date)values('$name','$pass','$phone_no','$email_id','$date')");
 mysqli_query($con,"insert into sv_user_order(name,address,services,sub_services,date,order_time,requirement,phone_no,city_name,price,payment_mode,payment_status)values('$name','$address','$services','$sub_services','$date','$time','$req','$phone_no','$city_name','$price','$payment_mode','pending')");
-$query1=mysql_fetch_array(mysqli_query($con,"select * from sv_admin_login"));
+$query1=mysqli_fetch_array(mysqli_query($con,"select * from sv_admin_login"));
 $logo = mysqli_real_escape_string($con,$query1['logo']);
 $imgSrc=$query1['site_url']."/admincp/admin-logo/$logo";
 $site_name = mysqli_real_escape_string($con,$query1['site_name']);
@@ -40,15 +40,15 @@ $subject= 'Your Account & Order has been created Successfully';
 $phone_no = mysqli_real_escape_string($con,$phone_no);
 $pwd = mysqli_real_escape_string($con,$pwd);
 $subtitle = $site_name . '- Order Details';
-$order = mysql_fetch_array(mysqli_query($con,"select * from sv_user_order where phone_no='$phone_no' order by order_id DESC limit 1"));
+$order = mysqli_fetch_array(mysqli_query($con,"select * from sv_user_order where phone_no='$phone_no' order by order_id DESC limit 1"));
 $city_name=mysqli_real_escape_string($con,$order['city_name']); 
 $address= mysqli_real_escape_string($con,$order['address']); 
 //$city=$order['city']; 
 $service_id=mysqli_real_escape_string($con,$order['services']); 
-$service=mysql_fetch_array(mysqli_query($con,"select * from sv_services where services_id='$service_id'"));
+$service=mysqli_fetch_array(mysqli_query($con,"select * from sv_services where services_id='$service_id'"));
 $service_name=mysqli_real_escape_string($con,$service['services_name']);
 $sub_services_id=mysqli_real_escape_string($con,$order['sub_services']);
-$sub_services=mysql_fetch_array(mysqli_query($con,"select * from sv_services_sub where sid='$sub_services_id'"));
+$sub_services=mysqli_fetch_array(mysqli_query($con,"select * from sv_services_sub where sid='$sub_services_id'"));
 $sub_services_name=$sub_services['services_sub_name'];
 $date = mysqli_real_escape_string($con,$order['date']);
 $order_time =mysqli_real_escape_string($con,$order['order_time']);

@@ -3,9 +3,9 @@ include("../connection.php");
 @session_start();
 $phone_no = mysqli_real_escape_string($con,$_REQUEST['phone_no']);
 $result=mysqli_query($con,"select * from sv_user_profile where phone_no = '$phone_no'");
-$row = mysql_fetch_array($result);
+$row = mysqli_fetch_array($result);
 $email_id=mysqli_real_escape_string($con,$row['email_id']);
-$rowcount = mysql_num_rows($result);
+$rowcount = mysqli_num_rows($result);
 //email id not match then.
 if ($rowcount== 0)
 {
@@ -30,7 +30,7 @@ if(mysqli_query($con,"update sv_user_profile set password='$pas' where phone_no=
 {
 if($email_id!='')
 {
-$query1=mysql_fetch_array(mysqli_query($con,"select * from sv_admin_login"));
+$query1=mysqli_fetch_array(mysqli_query($con,"select * from sv_admin_login"));
 $site_url=mysqli_real_escape_string($con,$query1['site_url']);
 $logo=mysqli_real_escape_string($con,$query1['logo']);
 $imgSrc=$site_url."/admincp/admin-logo/$logo";

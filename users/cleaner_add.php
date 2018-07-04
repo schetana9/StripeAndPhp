@@ -2,8 +2,9 @@
 include('../connection.php');
 require_once('../stripe-php-master/init.php');
 
+
 @session_start();
-$phone_no=mysqli_real_escape_string($con,$_SESSION['phone_no']);
+//$phone_no=mysqli_real_escape_string($con,$_SESSION['phone_no']);
 $email=mysqli_real_escape_string($con,$_REQUEST['email']);
 $cemail=mysqli_real_escape_string($con,$_REQUEST['cemail']);
 $fname=mysqli_real_escape_string($con,$_REQUEST['fname']);
@@ -16,49 +17,105 @@ $gender=mysqli_real_escape_string($con,$_REQUEST['gender']);
 $dob=mysqli_real_escape_string($con,$_REQUEST['dob']);
 $dob1 = mysqli_real_escape_string($con,date("Y-m-d", strtotime($dob)));
 $nation=mysqli_real_escape_string($con,$_REQUEST['nation']);
+$city=mysqli_real_escape_string($con,$_REQUEST['city']);
 $address=mysqli_real_escape_string($con,$_REQUEST['address']);
 $suburb=mysqli_real_escape_string($con,$_REQUEST['suburb']);
 $abt=mysqli_real_escape_string($con,$_REQUEST['abt']);
 $creat_time=mysqli_real_escape_string($con,date("Y-m-d"));
 $type=mysqli_real_escape_string($con,$_REQUEST['action']);
 $token = mysqli_real_escape_string($con,$_REQUEST['token']);
+$acctType =  mysqli_real_escape_string($con,$_REQUEST['type']);
+
+$buisName =  mysqli_real_escape_string($con,isset($_REQUEST['buis_name']) ? $_REQUEST['buis_name'] : '');
+$buisId =  mysqli_real_escape_string($con,isset($_REQUEST['buis_id']) ? $_REQUEST['buis_id'] : '');
+
+$competencies=mysqli_real_escape_string($con,isset($_REQUEST['competen']) ? $_REQUEST['competen'] : ''); 
+$qualifications =mysqli_real_escape_string($con,isset($_REQUEST['qualifi']) ? $_REQUEST['qualifi'] : '') ;
+
+$nat_id=mysqli_real_escape_string($con,isset($_REQUEST['nat_id']) ? $_REQUEST['nat_id'] : ''); 
+//$passport =mysqli_real_escape_string($con,isset($_REQUEST['passport']) ? $_REQUEST['passport'] : '') ;
+$res_permit =mysqli_real_escape_string($con,isset($_REQUEST['res_permit']) ? $_REQUEST['res_permit'] : '') ;
+
+
+ $file = mysqli_real_escape_string($con,$_REQUEST['passport_file']);
+
+ $file = $_FILES['passport_file']['name'];
+ $file_tmp_name = $_FILES['passport_file']['tmp_name'];
+ 
+
+ 
 if($type=='add')
 {
-mysqli_query($con,"insert into  sv_service_provider(email,confirm_email,first_name,last_name,mob_no,post_code,exp,paid_work,gender,dob,nationality,address,suburb,abt_us,phone_no,creat_time)values('$email','$cemail','$fname','$lname','$mob_no','$post_code','$exp','$paid_work','$gender','$dob1','$nation','$address','$suburb','$abt','$phone_no','$creat_time')");
-$query1=mysql_fetch_array(mysqli_query($con,"select * from sv_admin_login"));
-$site_url=mysqli_real_escape_string($con,$query1['site_url']);
-$logo=mysqli_real_escape_string($con,$query1['logo']);
-$imgSrc=$site_url."/admincp/admin-logo/".$logo;
-$site_name = mysqli_real_escape_string($con,$query1['site_name']);
-$stripe_secret_key = mysqli_real_escape_string($con,$query1['stripe_secret_key']);
+ 
+ 
+			mysqli_query($con,"insert into  sv_service_provider(email,confirm_email,first_name,last_name,mob_no,post_code,exp,paid_work,gender,dob,nationality,city,address,suburb,abt_us,creat_time,stripe_token,competencies,qualifications)
+			values
+			('$email','$cemail','$fname','$lname','$mob_no','$post_code','$exp','$paid_work','$gender','$dob1','$nation','$city','$address','$suburb','$abt','$creat_time','$token','$competencies','$qualifications')");
+			$last_id = mysqli_insert_id($con);
+			$query1=mysqli_fetch_array(mysqli_query($con,"select * from sv_admin_login"));
+			$site_url=mysqli_real_escape_string($con,$query1['site_url']);
+			$logo=mysqli_real_escape_string($con,$query1['logo']);
+			$imgSrc=$site_url."/admincp/admin-logo/".$logo;
+			$site_name = mysqli_real_escape_string($con,$query1['site_name']);
+			$stripe_secret_key = mysqli_real_escape_string($con,$query1['stripe_secret_key']);
+			
+			 // stripe integration 
+				 \Stripe\Stripe::setApiKey($stripe_secret_key);
+				 $acct = \Stripe\Account::create(array(
+					"country" => "FR",
+					"type" => "custom",
+					"account_token" => $token,
+					
+				));
+			//echo $acct;die;
+			$account_id = $acct->id;
+			
+			
+	$fp = fopen($file_tmp_name, 'r');	 
+	$uplodResponse = \Stripe\FileUpload::create(
+		  array(
+			"purpose" => "identity_document",
+			"file" => fopen($fp, 'r')
+		  ),
+		  array("stripe_account" => $account_id)
+		);
+ 
+ //echo '<pre>'; print_r($uplodResponse) ;die;
+ 
+ /*
+ 
+$account = \Stripe\Account::retrieve({CONNECTED_STRIPE_ACCOUNT_ID});
+$account->legal_entity->verification->document = 'file_5dtoJkOhAxrMWb';
+$account->save();
+*/
 
 
-// stripe integration 
 
-
-    \Stripe\Stripe::setApiKey($stripe_secret_key);
-
-    $acct = \Stripe\Account::create(array(
-        "country" => "FR",
-        "type" => "custom",
-        "account_token" => $token,
-        
-    ));
-    //echo $acct;die;
-$account_id = $acct->id;
-
-if($acct){
-    $last_id = mysql_insert_id($con);
-    mysqli_query($con,"update sv_service_provider set stripe_token='$account_id' where id='$last_id'");
-    
-    
-}
-
-//echo "<pre>";print_r($acct);die;
-
+			if($acct){
+			 
+				mysqli_query($con,"update sv_service_provider set stripe_token='$token' where id='$last_id'");
+				
+				mysqli_query($con,"INSERT INTO `sv_serviceprovider_info` ( `servideProviderId`,`account_id`,`account_type`,`buis_name`,`buis_id`,`nat_id`, `passport`, `res_permit`) VALUES ( '$last_id','$account_id','$acctType','$buisName','$buisId','$nat_id','$passport','$res_permit')");
+				
+				//Update save remaing details to account 
+			 
+			$acctRetrived = \Stripe\Account::retrieve( $account_id );
+			
+				//$acctRetrived->account_token = $token;
+			//	$acctRetrived->type = $acctType; 
+			/*	if($acctType == 'company'  || $acctType ==  'association') {
+					$acctRetrived->business_name = $buisName;
+					$acctRetrived->business_tax_id_provided = $buisId;
+				}*/
+ 				$acctRetrived->save();
+ 			}
+			
+			//echo "<pre>";print_r($acct);die;
+			
+	
 /*----------admin email---------------*/
 $subject= 'New Service Provider Request'; 
-$cleaner=mysql_fetch_array(mysqli_query($con,"select * from sv_service_provider where phone_no='$phone_no' order by id DESC limit 1 "));		
+$cleaner=mysqli_fetch_array(mysqli_query($con,"select * from sv_service_provider where phone_no='$phone_no' order by id DESC limit 1 "));		
 $email=mysqli_real_escape_string($con,$cleaner['email']); 
 $first_name= mysqli_real_escape_string($con,$cleaner['first_name']); 
 $last_name=mysqli_real_escape_string($con,$cleaner['last_name']); 
@@ -204,6 +261,7 @@ else
 
 echo "Inserted";	
 }
-else
-echo "Error";
+	
+	else
+		echo "Error";
 ?>

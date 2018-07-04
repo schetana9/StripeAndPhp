@@ -14,7 +14,7 @@ $phone_no =  mysqli_real_escape_string($con,$_SESSION["phone_no"]);
 $genre = mysqli_real_escape_string($con,md5($curpwd));
 $new_pass = mysqli_real_escape_string($con,md5($new));
 $result = mysqli_query($con,"SELECT * FROM sv_user_profile where phone_no='$phone_no' and password='$genre'");
-$row=mysql_fetch_array($result);
+$row=mysqli_fetch_array($result);
 if($row=="")
 echo "Invalid";
 else

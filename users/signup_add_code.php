@@ -11,7 +11,7 @@ $pin_code=mysqli_real_escape_string($con,$_POST['pin_code']);
 $gender=mysqli_real_escape_string($con,$_POST['gender']);
 $dat=mysqli_real_escape_string($con,date("Y-m-d H:i:s")); 
 $res=mysqli_query($con,"select * from sv_user_profile where phone_no='$phone_no'");
-$numrow=mysql_num_rows($res);
+$numrow=mysqli_num_rows($res);
 if($numrow=="")
 {
 mysqli_query($con,"insert into sv_user_profile(name,email_id,password,phone_no,city,address,pin_code,gender,date)values('$name','$email_id','$pwd','$phone_no','$city','$address','$pin_code','$gender','$dat')");
@@ -20,7 +20,7 @@ mysqli_query($con,"insert into sv_user_profile(name,email_id,password,phone_no,c
 <!---------Mail function ------------>
 <?php 
 //include('../header.php');
-$query1=mysql_fetch_array(mysqli_query($con,"select * from sv_admin_login"));
+$query1=mysqli_fetch_array(mysqli_query($con,"select * from sv_admin_login"));
 $logo = mysqli_real_escape_string($con,$query1['logo']);
 $imgSrc=$query1['site_url']."/admincp/admin-logo/$logo";
 $site_name = mysqli_real_escape_string($con,$query1['site_name']);

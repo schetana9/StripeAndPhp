@@ -1,6 +1,6 @@
 <?php
 include("connection.php");
-$res         = mysql_fetch_array(mysqli_query($con,"select * from sv_admin_login"));
+$res         = mysqli_fetch_array(mysqli_query($con,"select * from sv_admin_login"));
 $admin_email = mysqli_real_escape_string($con,$res['email_id']);
 $site_name   = mysqli_real_escape_string($con,$res['site_name']);
 $logo        = mysqli_real_escape_string($con,$res['logo']);

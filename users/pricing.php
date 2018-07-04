@@ -7,7 +7,7 @@
 <div class="min-space"></div>
 <div class="min-space"></div>
 <?php 
-$query=mysql_fetch_array(mysqli_query($con,"select * from sv_pages where id=3"));
+$query=mysqli_fetch_array(mysqli_query($con,"select * from sv_pages where id=3"));
 $content=$query['page_content'];
 $page_name=$query['page_name'];
 ?>
